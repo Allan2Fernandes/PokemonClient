@@ -5,9 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PokemonClientTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1000" Width="1000" KeyUp="Window_KeyUp">
+        Title="MainWindow" Height="1000" Width="1300" KeyUp="Window_KeyUp" Closed="Window_Closed">
     <Grid>
-        <Canvas x:Name="canvas" Width="900" Height="900"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="217*"/>
+            <ColumnDefinition Width="1072*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="canvas" Width="900" Height="900" Grid.ColumnSpan="2" Margin="189,42,200,42" Grid.Column="1"/>
+        <Button x:Name="connectButton" Content="Connect" HorizontalAlignment="Left" Margin="21,42,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.803,0.822" Grid.Column="1" Click="connectButton_Click"/>
+        <Button Content="Discconect" HorizontalAlignment="Left" Margin="25,82,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.32,-1.135" Grid.Column="1" Click="Button_Click"/>
 
     </Grid>
 </Window>

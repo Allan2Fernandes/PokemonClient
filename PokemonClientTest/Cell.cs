@@ -12,7 +12,7 @@ namespace PokemonClientTest
 {
     internal class Cell
     {
-        public static int CellLength = 30;
+        public static int CellLength = 45;
         private Coordinate coordinate;
         private Canvas canvas;
         private Image grassImage;
@@ -20,7 +20,7 @@ namespace PokemonClientTest
         private Rectangle rectangleStroke;
         string imageAbsolutePathOfGrass = "C:\\Users\\allan\\source\\repos\\PokemonClientTest\\PokemonClientTest\\grass.png";
         string imageAbsultePathOfTestPokemon = "C:\\Users\\allan\\source\\repos\\PokemonClientTest\\PokemonClientTest\\Charizard.png";
-
+        string relativeTest = "PokemonClientTest/grass.png";
         public Cell(Canvas canvas, Coordinate coordinate)
         {
             this.canvas = canvas;
@@ -39,6 +39,7 @@ namespace PokemonClientTest
                 Width = CellLength,
                 Height = CellLength,
                 //Name = "TestName",
+                //Source = new BitmapImage(new Uri(imageAbsultePathOfTestPokemon))
                 Source = new BitmapImage(new Uri(imageAbsultePathOfTestPokemon))
             };
 

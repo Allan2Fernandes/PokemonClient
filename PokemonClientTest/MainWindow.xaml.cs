@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +24,12 @@ namespace PokemonClientTest
     public partial class MainWindow : Window
     {
         Graph map;
+
+        //TCP stuff
+        static TcpClient tcpclnt;
+        string ip = "82.102.27.171";
+        int port = 24456;
+        Stream stm;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,18 +41,88 @@ namespace PokemonClientTest
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key.ToString().Equals("Up"))
+            //Sending the string:
+            String sentString = e.Key.ToString();
+            stm = tcpclnt.GetStream();
+
+            ASCIIEncoding asen = new ASCIIEncoding();
+            byte[] ba = asen.GetBytes(sentString);
+
+            stm.Write(ba, 0, ba.Length);
+            Console.WriteLine("Sending " + sentString);
+            stm.Flush();
+
+            //Recieve the string
+            byte[] bb = new byte[100];
+            int k = stm.Read(bb, 0, 100);
+            string receivedMessage = "";
+            for (int i = 0; i < k; i++)
             {
-                map.moveCharacterUp();
-            } else if (e.Key.ToString().Equals("Down"))
+                receivedMessage = receivedMessage + Convert.ToChar(bb[i]);
+            }
+            if (sentString.Equals(receivedMessage))
             {
-                map.moveCharacterDown();
-            }else if (e.Key.ToString().Equals("Left")) 
+                if (e.Key.ToString().Equals("Up"))
+                {
+                    map.moveCharacterUp();
+                }
+                else if (e.Key.ToString().Equals("Down"))
+                {
+                    map.moveCharacterDown();
+                }
+                else if (e.Key.ToString().Equals("Left"))
+                {
+                    map.moveCharacterLeft();
+                }
+                else if (e.Key.ToString().Equals("Right"))
+                {
+                    map.moveCharacterRight();
+                }
+            }
+        }
+
+
+
+
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            try
             {
-                map.moveCharacterLeft();
-            }else if (e.Key.ToString().Equals("Right"))
+                tcpclnt.Close();
+                Debug.WriteLine("Disconnected");
+            }
+            catch (Exception exception)
             {
-                map.moveCharacterRight();
+                exception.GetBaseException();
+            }
+        }
+
+        private void connectButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Debug.WriteLine("Test");
+                tcpclnt = new TcpClient();
+                tcpclnt.Connect(ip, port);
+                Debug.WriteLine("Connected");
+            }
+            catch (Exception exception)
+            {
+                exception.GetBaseException();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                tcpclnt.Close();
+                Debug.WriteLine("Disconnected");
+            }
+            catch (Exception exception)
+            {
+                exception.GetBaseException();
             }
         }
     }
